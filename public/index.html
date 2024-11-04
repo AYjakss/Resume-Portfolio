@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding Invitation</title>
+    <link rel="stylesheet" href="shweta.css">
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(to right, #ffafbd, #ffc3a0);
+            color: #4a4a4a;
+            text-align: center;
+            background-image: url('https://wallpapers.com/images/featured/watercolor-flower-background-zxl22ved2mbn6lcm.jpg'); 
+            background-size: cover;
+            background-attachment: fixed;
+        }
+        .container {
+            padding: 40px;
+        }
+        .invitation {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .floral-decoration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://t4.ftcdn.net/jpg/05/43/71/63/360_F_543716302_0jeR6StkHVTbNRQe887yQUpP1Dkq3Z3Q.jpg'); 
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        .details, .guest-list {
+            margin: 20px 0;
+            z-index: 1;
+        }
+        .countdown {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #e63946;
+        }
+        .guest-input {
+            margin: 10px 0;
+            width: 80%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .guest-list-item {
+            list-style-type: none;
+            font-style: italic;
+            margin: 5px 0;
+        }
+        .rsvp {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+        .rsvp:hover {
+            background-color: #d62839;
+        }
+        .rsvp:active {
+            transform: scale(0.95);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes buttonClick {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .clicked {
+            animation: buttonClick 0.2s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="invitation">
+            <div class="floral-decoration"></div>
+            <h1 class="animated fadeIn">You're Invited to the Wedding of</h1>
+            <h2 class="names animated fadeIn">Shweta & Vinay</h2>
+            <p class="animated fadeIn">Join us in celebrating our love and the start of our new journey together.</p>
+            <div class="details">
+                <h3>Wedding Date</h3>
+                <p class="date animated slideIn">22 November 2024</p>
+                <div class="countdown" id="countdown"></div>
+            </div>
+            <button class="rsvp animated bounceIn" onclick="showMessage()">RSVP Now</button>
+            <input type="text" class="guest-input" id="guestName" placeholder="Enter your name" />
+            <button class="rsvp" onclick="addGuest()">Add to Guest List</button>
+            <ul class="guest-list" id="guestList"></ul>
+            <p class="message"></p>
+        </div>
+    </div>
+    
+    <script>
+        function showMessage() {
+            const name = document.getElementById('guestName').value;
+            if (name) {
+                document.querySelector('.message').textContent = `Thank you for your RSVP, ${name}!`;
+                document.querySelector('.message').classList.add('fadeIn');
+            } else {
+                document.querySelector('.message').textContent = "Please enter your name!";
+                document.querySelector('.message').classList.add('fadeIn');
+            }
+        }
+
+        function addGuest() {
+            const guestName = document.getElementById('guestName').value;
+            if (guestName) {
+                const listItem = document.createElement('li');
+                listItem.textContent = guestName;
+                listItem.className = 'guest-list-item';
+                document.getElementById('guestList').appendChild(listItem);
+                document.getElementById('guestName').value = ''; // Clear input
+            }
+        }
+
+        const weddingDate = new Date("November 22, 2024 12:00:00").getTime();
+        const countdownElement = document.getElementById('countdown');
+
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            countdownElement.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+            if (distance < 0) {
+                clearInterval();
+                countdownElement.textContent = "It's the big day!";
+            }
+        }, 1000);
+
+        function animateButton(button) {
+            button.classList.add('clicked');
+            setTimeout(() => {
+                button.classList.remove('clicked');
+            }, 200);
+        }
+
+        document.querySelectorAll('.rsvp').forEach(button => {
+            button.addEventListener('click', () => animateButton(button));
+        });
+    </script>
+</body>
+</html>
